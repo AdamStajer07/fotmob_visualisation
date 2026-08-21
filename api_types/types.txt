@@ -1,0 +1,224 @@
+KOLUMNY DANYCH - OPIS PO POLSKU
+================================
+
+=== INFORMACJE PODSTAWOWE ===
+player_id                                   - Unikalny identyfikator gracza w FotMob
+player_name                                 - Imie i nazwisko gracza
+birth_date                                  - Data urodzenia (format ISO)
+position                                    - Pozycja na boisku (Keeper, Center Back, Striker itd.)
+height_cm                                   - Wzrost w centymetrach
+age                                         - Wiek gracza na poczatek danego sezonu
+preferred_foot                              - Preferowana noga (Right, Left, Both)
+country                                     - Kraj pochodzenia
+team                                        - Nazwa druzyny
+season                                      - Sezon (np. 2024/2025)
+tournament                                  - Turniej (Ekstraklasa, Conference League, Europa League)
+tournament_id                               - Identyfikator turnieju w FotMob
+
+=== TOP CARD (podsumowanie sezonu) ===
+top_goals_conceded                          - Gole stracone (bramkarze) - z karty glownej
+top_clean_sheet_title                       - Czyste konta (bramkarze) - z karty glownej
+top_rating                                  - Srednia ocena FotMob w sezonie
+top_matches_uppercase                       - Liczba rozegranych meczow
+top_player_started_matches                  - Mecze w wyjsciowym skladzie
+top_saved_penalties                         - Obronione karne (format "X/Y")
+top_goals                                   - Gole strzelone - z karty glownej
+top_assists                                 - Asysty - z karty glownej
+top_minutes_played                          - Minuty rozegrane w sezonie
+
+=== BRAMKARZE - OBRONY ===
+saves                                       - Suma obron w sezonie
+saves_per90                                 - Obrony na 90 minut
+saves_percentile                            - Percentyl obron (0-100, im wyzej tym lepiej)
+save_percentage                             - Procent obronionych strzalow
+save_percentage_per90                       - Procent obron na 90 minut
+save_percentage_percentile                  - Percentyl procentu obron
+
+=== BRAMKARZE - GOLE STRACONE ===
+goals_conceded                              - Gole stracone w sezonie
+goals_conceded_per90                        - Gole stracone na 90 minut
+goals_conceded_percentile                   - Percentyl goli straconych (wyzej = mniej goli = lepiej)
+goals_prevented                             - Gole zapobieżone (roznica miedzy xG a rzeczywistymi golami)
+goals_prevented_per90                       - Gole zapobieżone na 90 minut
+goals_prevented_percentile                  - Percentyl goli zapobieżonych
+
+=== BRAMKARZE - CZYSTE KONTA ===
+clean_sheet_team_title                      - Czyste konta (mecze bez straconego gola)
+clean_sheet_team_title_per90                - Czyste konta na 90 minut
+clean_sheet_team_title_percentile           - Percentyl czystych kont
+
+=== BRAMKARZE - KARNE ===
+penalty_saves                               - Obronione rzuty karne
+penalty_saves_per90                         - Obronione karne na 90 minut
+penalty_saves_percentile                    - Percentyl obronionych karnych
+penalty_goals_conceded                      - Gole stracone z karnych
+penalty_goals_conceded_per90                - Gole z karnych na 90 minut
+penalty_goals_conceded_percentile           - Percentyl goli z karnych
+penalty_save_percent                        - Procent obronionych karnych
+penalty_save_percent_per90                  - Procent obronionych karnych na 90 minut
+penalty_save_percent_percentile             - Percentyl procentu obronionych karnych
+
+=== BRAMKARZE - BLEDY I WYJSCIA ===
+error_led_to_goal                           - Bledy prowadzace do gola
+error_led_to_goal_per90                     - Bledy prowadzace do gola na 90 minut
+error_led_to_goal_percentile                - Percentyl bledow (wyzej = mniej bledow = lepiej)
+keeper_sweeper                              - Wyjscia bramkarza poza pole karne (sweeper)
+keeper_sweeper_per90                        - Wyjscia sweepera na 90 minut
+keeper_sweeper_percentile                   - Percentyl wyjsc sweepera
+keeper_high_claim                           - Przechwycenia pilki w powietrzu (high claims)
+keeper_high_claim_per90                     - Przechwycenia w powietrzu na 90 minut
+keeper_high_claim_percentile                - Percentyl przechwyceń w powietrzu
+
+=== PODANIA ===
+successful_passes                           - Udane podania w sezonie
+successful_passes_per90                     - Udane podania na 90 minut
+successful_passes_percentile                - Percentyl udanych podan
+successful_passes_accuracy                  - Celnosc podan (procent udanych)
+successful_passes_accuracy_per90            - Celnosc podan na 90 minut
+successful_passes_accuracy_percentile       - Percentyl celnosci podan
+long_balls_accurate                         - Celne dlugie podania
+long_balls_accurate_per90                   - Celne dlugie podania na 90 minut
+long_balls_accurate_percentile              - Percentyl celnych dlugich podan
+long_ball_succeeeded_accuracy               - Celnosc dlugich podan (procent)
+long_ball_succeeeded_accuracy_per90         - Celnosc dlugich podan na 90 minut
+long_ball_succeeeded_accuracy_percentile    - Percentyl celnosci dlugich podan
+
+=== KREOWANIE GRY ===
+expected_assists                            - Oczekiwane asysty (xA) - model statystyczny
+expected_assists_per90                      - xA na 90 minut
+expected_assists_percentile                 - Percentyl xA
+chances_created                             - Stworzone sytuacje bramkowe
+chances_created_per90                       - Stworzone szanse na 90 minut
+chances_created_percentile                  - Percentyl stworzonych szans
+big_chance_created_team_title               - Stworzone duze szanse (czyste okazje)
+big_chance_created_team_title_per90         - Duze szanse na 90 minut
+big_chance_created_team_title_percentile    - Percentyl duzych szans
+assists                                     - Asysty (podania przed golem)
+assists_per90                               - Asysty na 90 minut
+assists_percentile                          - Percentyl asyst
+crosses_succeeeded                          - Udane dośrodkowania
+crosses_succeeeded_per90                    - Udane dosrodkowania na 90 minut
+crosses_succeeeded_percentile               - Percentyl udanych dosrodkowan
+crosses_succeeeded_accuracy                 - Celnosc dosrodkowan (procent)
+crosses_succeeeded_accuracy_per90           - Celnosc dosrodkowan na 90 minut
+crosses_succeeeded_accuracy_percentile      - Percentyl celnosci dosrodkowan
+
+=== STRZELANIE ===
+goals                                       - Gole strzelone w sezonie
+goals_per90                                 - Gole na 90 minut
+goals_percentile                            - Percentyl goli
+expected_goals                              - Oczekiwane gole (xG) - model statystyczny
+expected_goals_per90                        - xG na 90 minut
+expected_goals_percentile                   - Percentyl xG
+expected_goals_on_target                    - xG ze strzalow celnych (xGOT)
+expected_goals_on_target_per90              - xGOT na 90 minut
+expected_goals_on_target_percentile         - Percentyl xGOT
+non_penalty_xg                              - xG bez rzutow karnych (npxG)
+non_penalty_xg_per90                        - npxG na 90 minut
+non_penalty_xg_percentile                   - Percentyl npxG
+shots                                       - Strzaly ogolnie
+shots_per90                                 - Strzaly na 90 minut
+shots_percentile                            - Percentyl strzalow
+ShotsOnTarget                               - Strzaly celne (w swiatlo bramki)
+ShotsOnTarget_per90                         - Strzaly celne na 90 minut
+ShotsOnTarget_percentile                    - Percentyl strzalow celnych
+headed_shots                                - Strzaly glowa
+headed_shots_per90                          - Strzaly glowa na 90 minut
+headed_shots_percentile                     - Percentyl strzalow glowa
+
+=== DRYBLING I POSIADANIE ===
+dribbles_succeeded                          - Udane dryblingi
+dribbles_succeeded_per90                    - Udane dryblingi na 90 minut
+dribbles_succeeded_percentile               - Percentyl udanych dryblingow
+won_contest_subtitle                        - Wygrane pojedynki 1 na 1 (%)
+won_contest_subtitle_per90                  - Wygrane pojedynki 1 na 1 na 90 minut (%)
+won_contest_subtitle_percentile             - Percentyl wygranych pojedynkow
+touches                                     - Kontakty z pilka (lacznie)
+touches_per90                               - Kontakty z pilka na 90 minut
+touches_percentile                          - Percentyl kontaktow z pilka
+touches_opp_box                             - Kontakty w polu karnym rywala
+touches_opp_box_per90                       - Kontakty w polu karnym na 90 minut
+touches_opp_box_percentile                  - Percentyl kontaktow w polu karnym
+dispossessed                                - Stracenie pilki (utrata posiadania)
+dispossessed_per90                          - Straty pilki na 90 minut
+dispossessed_percentile                     - Percentyl strat pilki (wyzej = mniej strat = lepiej)
+
+=== POJEDYNKI FIZYCZNE ===
+duel_won                                    - Wygrane pojedynki (wszystkie typy)
+duel_won_per90                              - Wygrane pojedynki na 90 minut
+duel_won_percentile                         - Percentyl wygranych pojedynkow
+duel_won_percent                            - Procent wygranych pojedynkow
+duel_won_percent_per90                      - Procent wygranych pojedynkow na 90 minut
+duel_won_percent_percentile                 - Percentyl procentu wygranych
+aerials_won                                 - Wygrane pojedynki powietrzne (glowki)
+aerials_won_per90                           - Pojedynki powietrzne wygrane na 90 minut
+aerials_won_percentile                      - Percentyl pojedynkow powietrznych
+aerials_won_percent                         - Procent wygranych pojedynkow powietrznych
+aerials_won_percent_per90                   - Procent wygranych powietrznych na 90 minut
+aerials_won_percent_percentile              - Percentyl procentu wygranych powietrznych
+
+=== DEFENSYWA ===
+defensive_actions                           - Akcje defensywne (suma: odbiory + przechwycenia + wybicia)
+defensive_actions_per90                     - Akcje defensywne na 90 minut
+defensive_actions_percentile                - Percentyl akcji defensywnych
+matchstats.headers.tackles                  - Odbiory (wslizgi i stojace)
+matchstats.headers.tackles_per90            - Odbiory na 90 minut
+matchstats.headers.tackles_percentile       - Percentyl odbiorow
+interceptions                               - Przechwycenia (przejecia pilki)
+interceptions_per90                         - Przechwycenia na 90 minut
+interceptions_percentile                    - Percentyl przechwyceń
+blocked_shots                               - Zablokowane strzaly
+blocked_shots_per90                         - Zablokowane strzaly na 90 minut
+blocked_shots_percentile                    - Percentyl zablokowanych strzalow
+clearances                                  - Wybicia (oczyszczenia)
+clearances_per90                            - Wybicia na 90 minut
+clearances_percentile                       - Percentyl wybic
+recoveries                                  - Odzyskania pilki
+recoveries_per90                            - Odzyskania pilki na 90 minut
+recoveries_percentile                       - Percentyl odzyskan
+poss_won_att_3rd_team_title                 - Odzyskania w ostatniej 1/3 boiska (pressing)
+poss_won_att_3rd_team_title_per90           - Odzyskania w 1/3 atakujacej na 90 minut
+poss_won_att_3rd_team_title_percentile      - Percentyl odzyskan w pressingu
+dribbled_past                               - Ile razy rywal nas minial (przegrany drybling)
+dribbled_past_per90                         - Przegrane dryblingi na 90 minut
+dribbled_past_percentile                    - Percentyl przegranych dryblingow (wyzej = mniej = lepiej)
+
+=== DEFENSYWA - NA BOISKU ===
+goals_conceded_while_on_pitch               - Gole stracone gdy gracz byl na boisku
+goals_conceded_while_on_pitch_per90         - Gole stracone na boisku na 90 minut
+goals_conceded_while_on_pitch_percentile    - Percentyl goli straconych na boisku
+expected_goals_against_while_on_pitch       - xG przeciwnikow gdy gracz na boisku
+expected_goals_against_while_on_pitch_per90  - xG przeciwnikow na 90 minut
+expected_goals_against_while_on_pitch_percentile - Percentyl xG przeciwnikow
+
+=== FAULE I KARTKI ===
+fouls_won                                   - Faule wymuszone na rywalach
+fouls_won_per90                             - Wymuszone faule na 90 minut
+fouls_won_percentile                        - Percentyl wymuszonych fauli
+fouls                                       - Faule popelnione
+fouls_per90                                 - Faule popelnione na 90 minut
+fouls_percentile                            - Percentyl fauli (wyzej = mniej fauli = lepiej)
+yellow_cards                                - Zolte kartki
+yellow_cards_per90                          - Zolte kartki na 90 minut
+yellow_cards_percentile                     - Percentyl zoltych kartek (wyzej = mniej = lepiej)
+red_cards                                   - Czerwone kartki
+red_cards_per90                             - Czerwone kartki na 90 minut
+red_cards_percentile                        - Percentyl czerwonych kartek
+
+=== KARNE (ZAWODNICY Z POLA) ===
+penalty_conceded_title                      - Spowodowane rzuty karne
+penalty_conceded_title_per90                - Spowodowane karne na 90 minut
+penalty_conceded_title_percentile           - Percentyl spowodowanych karnych
+penalty_won_title                           - Wywalczone rzuty karne
+penalty_won_title_per90                     - Wywalczone karne na 90 minut
+penalty_won_title_percentile                - Percentyl wywalczonych karnych
+
+=== GOLE (ALTERNATYWNA SEKCJA) ===
+goals_subtitle                              - Gole (z innej sekcji statystyk)
+goals_subtitle_per90                        - Gole na 90 minut (alt.)
+goals_subtitle_percentile                   - Percentyl goli (alt.)
+
+=== WYJASNIENIE SUFIKSOW ===
+_per90       - Statystyka przeliczona na 90 minut gry (normalizacja za czas)
+_percentile  - Percentyl w porownaniu do innych graczy na tej samej pozycji (0-100)
+             Percentyl 75 oznacza: lepszy niz 75% graczy na tej pozycji w lidze

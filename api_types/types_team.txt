@@ -1,0 +1,110 @@
+KOLUMNY DANYCH DRUZYNOWYCH - OPIS
+===================================
+Zrodlo: FotMob API (data.fotmob.com/stats)
+Plik: output/team_stats.parquet / .csv / .json
+Jeden wiersz = jedna druzyna w jednym sezonie
+
+=== INFORMACJE PODSTAWOWE ===
+team_id                                     - Unikalny identyfikator druzyny w FotMob
+team_name                                   - Nazwa druzyny
+team_color                                  - Kolor druzyny (hex, np. #009445)
+country_code                                - Kod kraju (np. POL)
+season                                      - Sezon (np. 2025/2026)
+tournament_id                               - Identyfikator turnieju/sezonu w FotMob
+matches_played                              - Liczba rozegranych meczow w sezonie
+
+=== OGOLNE ===
+rating_team                                 - Srednia ocena FotMob druzyny w sezonie
+possession_percentage_team                  - Sredni procent posiadania pilki
+possession_percentage_team_sub              - Liczba meczow uwzglednionych
+
+=== ATAK - GOLE ===
+goals_team_match                            - Srednia goli strzelonych na mecz
+goals_team_match_sub                        - Laczna liczba goli strzelonych w sezonie
+expected_goals_team                         - Oczekiwane gole (xG) - suma w sezonie
+expected_goals_team_sub                     - Liczba meczow uwzglednionych
+_xg_diff_team                               - Roznica xG (xG - xGA) - suma w sezonie
+_xg_diff_team_sub                           - Roznica goli rzeczywistych (goals - goals conceded)
+
+=== ATAK - STRZALY I SZANSE ===
+ontarget_scoring_att_team                   - Strzaly celne na mecz (srednia)
+ontarget_scoring_att_team_sub               - Srednia strzalow ogolem na mecz
+big_chance_team                             - Duze szanse stworzone (suma w sezonie)
+big_chance_team_sub                         - Laczna liczba goli (konwersja duzych szans)
+big_chance_missed_team                      - Duze szanse zmarnowane (suma w sezonie)
+big_chance_missed_team_sub                  - Laczna liczba goli strzelonych
+
+=== ATAK - STALE FRAGMENTY ===
+_set_piece_goals_team                       - Gole ze stalych fragmentow gry (suma)
+_set_piece_goals_team_sub                   - Oczekiwane gole ze stalych fragmentow (xG set piece)
+corner_taken_team                           - Rzuty rozne wykonane (suma w sezonie)
+
+=== ATAK - KARNE ===
+penalty_won_team                            - Wywalczone rzuty karne (suma)
+penalty_won_team_sub                        - Procent wykorzystanych karnych (%)
+
+=== ATAK - AKTYWNOSC W POLU KARNYM ===
+touches_in_opp_box_team                     - Kontakty z pilka w polu karnym rywala (suma)
+
+=== PODANIA ===
+accurate_pass_team                          - Celne podania na mecz (srednia)
+accurate_pass_team_sub                      - Celnosc podan (% accuracy)
+accurate_long_balls_team                    - Celne dlugie podania na mecz (srednia)
+accurate_long_balls_team_sub                - Celnosc dlugich podan (% accuracy)
+accurate_cross_team                         - Celne dosrodkowania na mecz (srednia)
+accurate_cross_team_sub                     - Celnosc dosrodkowan (% accuracy)
+
+=== DEFENSYWA - GOLE STRACONE ===
+goals_conceded_team_match                   - Srednia goli straconych na mecz
+goals_conceded_team_match_sub               - Laczna liczba goli straconych w sezonie
+expected_goals_conceded_team                - Oczekiwane gole stracone (xGA) - suma w sezonie
+expected_goals_conceded_team_sub            - Laczna liczba goli straconych (rzeczywista)
+clean_sheet_team                            - Czyste konta (mecze bez straty gola)
+clean_sheet_team_sub                        - Liczba meczow rozegranych
+
+=== DEFENSYWA - STALE FRAGMENTY ===
+_set_piece_goals_conceded_team              - Gole stracone ze stalych fragmentow (suma)
+_set_piece_goals_conceded_team_sub          - xG stracone ze stalych fragmentow
+
+=== DEFENSYWA - KARNE ===
+penalty_conceded_team                       - Spowodowane rzuty karne (suma)
+penalty_conceded_team_sub                   - Gole stracone z karnych
+
+=== DEFENSYWA - AKCJE ===
+interception_team                           - Przechwycenia na mecz (srednia)
+interception_team_sub                       - Laczna liczba przechwyceń w sezonie
+total_tackle_team                           - Odbiory na mecz (srednia)
+total_tackle_team_sub                       - Laczna liczba odbiorow w sezonie
+effective_clearance_team                    - Wybicia na mecz (srednia)
+effective_clearance_team_sub                - Laczna liczba wybic w sezonie
+poss_won_att_3rd_team                       - Odzyskania w ostatniej 1/3 boiska na mecz (srednia)
+poss_won_att_3rd_team_sub                   - Laczna liczba odzyskan w att 3rd w sezonie
+saves_team                                  - Obrony bramkarza na mecz (srednia)
+saves_team_sub                              - Laczna liczba obron w sezonie
+
+=== FREKWENCJA ===
+home_attendance_team                        - Srednia frekwencja na meczach domowych
+
+=== DYSCYPLINA ===
+fk_foul_lost_team                           - Faule na mecz (srednia)
+fk_foul_lost_team_sub                       - Laczna liczba fauli w sezonie
+total_yel_card_team                         - Zolte kartki (suma w sezonie)
+total_yel_card_team_sub                     - Srednia zoltych kartek na mecz
+total_red_card_team                         - Czerwone kartki (suma w sezonie)
+total_red_card_team_sub                     - Srednia czerwonych kartek na mecz
+
+=== WYJASNIENIE SUFIKSOW ===
+_sub         - Dodatkowa wartosc kontekstowa (znaczenie zalezy od statystyki):
+               * Dla statystyk "na mecz" (_match) -> _sub to lacza suma w sezonie
+               * Dla statystyk podaniowych -> _sub to % celnosci (accuracy)
+               * Dla statystyk sumowych (kartki, szanse) -> _sub to wartosc per match lub powiazana metryka
+               * Dla xG/xGA -> _sub to odpowiednik rzeczywisty (gole/gole stracone)
+               * Dla karnych -> _sub to % wykorzystania lub gole z karnych
+
+=== PRZYKLADOWA INTERPRETACJA (Legia Warszawa, 2025/26) ===
+goals_team_match = 1.2                      -> Legia strzela srednio 1.2 gola na mecz
+goals_team_match_sub = 42                   -> W sumie strzelila 42 gole w sezonie
+accurate_pass_team = 339.8                  -> 339.8 celnych podan na mecz
+accurate_pass_team_sub = 80.6               -> Celnosc podan: 80.6%
+penalty_won_team = 6                        -> Wywalczyla 6 karnych
+penalty_won_team_sub = 83.3                 -> Wykorzystala 83.3% karnych
