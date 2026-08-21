@@ -4,11 +4,10 @@ import numpy as np
 from collections import defaultdict
 from utils.colors import (BG_COLOR, LEGIA_COLOR, LEAGUE_COLOR, TEXT_COLOR, SUBTITLE_TEXT,
                     COLOR_GRID, ZONE_GREEN, ZONE_RED, COLOR_TOP20_AVG, COLOR_STRIKERS_AVG)
+from utils.club_info import (SEASON, TEAM)
 
 df = pd.read_parquet('data/ekstraklasa_all_clean.parquet')
 
-SEASON = '2025/2026'
-TEAM = 'Legia Warszawa'
 MIN_SHOTS_ON_TARGET = 3
 
 legia_players = df[

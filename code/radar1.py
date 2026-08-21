@@ -4,10 +4,11 @@ import numpy as np
 from mplsoccer import Radar
 from utils.colors import (BG_COLOR, LEGIA_COLOR, LEAGUE_COLOR, TEXT_COLOR, SUBTLE_TEXT,
                     RING_COLOR_1, RING_COLOR_2, RING_EDGE)     
+from utils.club_info import (TEAM)
 
 df = pd.read_parquet('data/team_stats.parquet')
 
-legia = df[df['team_name'] == 'Legia Warszawa'].iloc[0]
+legia = df[df['team_name'] == TEAM].iloc[0]
 
 stat_cols = [
     'expected_goals_team',

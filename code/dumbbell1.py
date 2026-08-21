@@ -6,11 +6,9 @@ import numpy as np
 from utils.colors import (BG_COLOR, LEGIA_COLOR, LEAGUE_COLOR, TEXT_COLOR, SUBTITLE_TEXT,
                     COLOR_GRID, COLOR_OVERPERFORM, COLOR_UNDERPERFORM,
                     COLOR_AVG_LEAGUE, COLOR_AVG_CLUB)
+from utils.club_info import (SEASON, TEAM)
 
 df = pd.read_parquet('data/ekstraklasa_all_clean.parquet')
-
-SEASON = '2025/2026'
-TEAM = 'Legia Warszawa'
 
 legia_players = df[
     (df['team'] == TEAM) &
