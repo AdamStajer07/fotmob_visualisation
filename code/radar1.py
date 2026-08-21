@@ -2,15 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from mplsoccer import Radar
-
-BG_COLOR = "#ffffff"
-RING_COLOR_1 = "#f7f7f7"  
-RING_COLOR_2 = "#ebebeb"  
-RING_EDGE = "#d0d0d0"
-LEGIA_COLOR = "#009445"
-LEAGUE_COLOR = "#c0392b"
-TEXT_COLOR = "#1a1a1a"
-SUBTLE_TEXT = "#6b7280"     
+from utils.colors import (BG_COLOR, LEGIA_COLOR, LEAGUE_COLOR, TEXT_COLOR, SUBTLE_TEXT,
+                    RING_COLOR_1, RING_COLOR_2, RING_EDGE)     
 
 df = pd.read_parquet('data/team_stats.parquet')
 

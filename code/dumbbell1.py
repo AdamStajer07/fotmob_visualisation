@@ -3,15 +3,9 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import matplotlib.patheffects as pe
 import numpy as np
-
-BG_COLOR = "#ffffff"
-LEGIA_COLOR = "#009445"
-LEAGUE_COLOR = "#c0392b"
-TEXT_COLOR = "#1a1a1a"
-SUBTITLE_TEXT = "#6b7280"
-COLOR_GRID = "#d0d0d0"
-COLOR_OVERPERFORM = "#009445" 
-COLOR_UNDERPERFORM = "#c0392b"
+from utils.colors import (BG_COLOR, LEGIA_COLOR, LEAGUE_COLOR, TEXT_COLOR, SUBTITLE_TEXT,
+                    COLOR_GRID, COLOR_OVERPERFORM, COLOR_UNDERPERFORM,
+                    COLOR_AVG_LEAGUE, COLOR_AVG_CLUB)
 
 df = pd.read_parquet('data/ekstraklasa_all_clean.parquet')
 
