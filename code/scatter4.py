@@ -1,0 +1,197 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from utils.colors import (BG_COLOR, LEGIA_COLOR, LEAGUE_COLOR, TEXT_COLOR, SUBTITLE_TEXT,
+                    COLOR_GRID, ZONE_GREEN, ZONE_RED, COLOR_AVG_LEAGUE, COLOR_AVG_CLUB)
+from utils.club_info import (SEASON, TEAM, EXCLUDED_PLAYERS)
+
+df = pd.read_parquet('data/ekstraklasa_all_clean.parquet')
+
+MIN_MATCHES = 5
+MIN_DRIBBLES = 5
+
+legia_players = df[
+    (df['team'] == TEAM) &
+    (df['tournament'] == 'Ekstraklasa') &
+    (df['season'] == SEASON) &
+    (df['position'] != 'Keeper')
+].copy()
+legia_players = legia_players[~legia_players['player_name'].isin(EXCLUDED_PLAYERS)]
+
+legia_players['top_matches_uppercase'] = legia_players['top_matches_uppercase'].fillna(0)
+legia_players = legia_players[legia_players['top_matches_uppercase'] >= MIN_MATCHES].copy()
+
+legia_players['dribbles_succeeded'] = legia_players['dribbles_succeeded'].fillna(0)
+legia_players['won_contest_subtitle'] = legia_players['won_contest_subtitle'].fillna(0)
+
+legia_players = legia_players[legia_players['dribbles_succeeded'] >= MIN_DRIBBLES].copy()
+
+all_outfield = df[
+    (df['tournament'] == 'Ekstraklasa') &
+    (df['season'] == SEASON) &
+    (df['position'] != 'Keeper')
+].copy()
+all_outfield['top_matches_uppercase'] = all_outfield['top_matches_uppercase'].fillna(0)
+all_outfield = all_outfield[all_outfield['top_matches_uppercase'] >= MIN_MATCHES].copy()
+all_outfield['dribbles_succeeded'] = all_outfield['dribbles_succeeded'].fillna(0)
+all_outfield['won_contest_subtitle'] = all_outfield['won_contest_subtitle'].fillna(0)
+all_outfield = all_outfield[all_outfield['dribbles_succeeded'] >= MIN_DRIBBLES].copy()
+
+league_avg_dribbles = all_outfield['dribbles_succeeded'].mean()
+league_avg_pct = all_outfield['won_contest_subtitle'].mean()
+club_avg_dribbles = legia_players['dribbles_succeeded'].mean()
+club_avg_pct = legia_players['won_contest_subtitle'].mean()
+
+legia_players['top_minutes_played'] = legia_players['top_minutes_played'].fillna(0)
+min_minutes = legia_players['top_minutes_played'].min()
+max_minutes = legia_players['top_minutes_played'].max()
+size_min, size_max = 80, 350
+if max_minutes > min_minutes:
+    legia_players['dot_size'] = size_min + (legia_players['top_minutes_played'] - min_minutes) / (max_minutes - min_minutes) * (size_max - size_min)
+else:
+    legia_players['dot_size'] = (size_min + size_max) / 2
+
+def shorten_names(names_list):
+    surnames = {}
+    for full_name in names_list:
+        parts = full_name.split()
+        surname = parts[-1] if parts else full_name
+        surnames.setdefault(surname, []).append(full_name)
+
+    short = {}
+    for surname, fulls in surnames.items():
+        if len(fulls) == 1:
+            short[fulls[0]] = surname
+        else:
+            for full in fulls:
+                parts = full.split()
+                short[full] = f"{parts[0][0]}. {surname}" if len(parts) > 1 else surname
+    return short
+
+name_map = shorten_names(legia_players['player_name'].tolist())
+legia_players['short_name'] = legia_players['player_name'].map(name_map)
+
+plt.rcParams.update({
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Segoe UI', 'Arial', 'Helvetica'],
+})
+
+fig, ax = plt.subplots(figsize=(18, 12))
+
+x_min = 0
+x_max = legia_players['dribbles_succeeded'].max() * 1.05
+y_min = max(0, legia_players['won_contest_subtitle'].min() - 10)
+y_max = min(100, legia_players['won_contest_subtitle'].max() + 10)
+
+median_x = league_avg_dribbles
+median_y = league_avg_pct
+
+median_y_norm = (median_y - y_min) / (y_max - y_min)
+
+ax.axvspan(median_x, x_max, ymin=median_y_norm, ymax=1,
+           facecolor=ZONE_GREEN, alpha=0.5, zorder=0)
+ax.axvspan(x_min, median_x, ymin=0, ymax=median_y_norm,
+           facecolor=ZONE_RED, alpha=0.5, zorder=0)
+
+ax.scatter(
+    league_avg_dribbles, league_avg_pct,
+    color=COLOR_AVG_LEAGUE, s=140, zorder=5,
+    edgecolors=BG_COLOR, linewidths=1.5, alpha=0.9,
+    marker='D',
+)
+ax.annotate(
+    'League average',
+    (league_avg_dribbles, league_avg_pct),
+    textcoords="offset points", xytext=(8, 8),
+    fontsize=13, fontweight='bold', color=COLOR_AVG_LEAGUE,
+    alpha=0.9,
+)
+
+ax.scatter(
+    club_avg_dribbles, club_avg_pct,
+    color=COLOR_AVG_CLUB, s=140, zorder=5,
+    edgecolors=BG_COLOR, linewidths=1.5, alpha=0.9,
+    marker='D',
+)
+ax.annotate(
+    'Club average',
+    (club_avg_dribbles, club_avg_pct),
+    textcoords="offset points", xytext=(8, 8),
+    fontsize=13, fontweight='bold', color=COLOR_AVG_CLUB,
+    alpha=0.9,
+)
+
+ax.scatter(
+    legia_players['dribbles_succeeded'],
+    legia_players['won_contest_subtitle'],
+    s=legia_players['dot_size'],
+    color=LEGIA_COLOR,
+    zorder=4,
+    edgecolors=BG_COLOR,
+    linewidths=1.5,
+    alpha=0.85,
+)
+
+for _, row in legia_players.iterrows():
+    if row['short_name'] == 'Stojanovic':
+        xytext = (-8, 8)
+        ha = 'right'
+    else:
+        xytext = (8, 8)
+        ha = 'left'
+
+    ax.annotate(
+        row['short_name'],
+        (row['dribbles_succeeded'], row['won_contest_subtitle']),
+        textcoords="offset points", xytext=xytext,
+        fontsize=13, fontweight='bold', color=TEXT_COLOR,
+        alpha=0.85, va='bottom', ha=ha,
+    )
+
+ax.text(0.95, 0.95, 'Elite\nDribblers',
+        transform=ax.transAxes, ha='right', va='top',
+        fontsize=14, fontweight='bold', color=LEGIA_COLOR, alpha=0.5)
+ax.text(0.05, 0.05, 'Low dribble\noutput',
+        transform=ax.transAxes, ha='left', va='bottom',
+        fontsize=14, fontweight='bold', color=LEAGUE_COLOR, alpha=0.5)
+ax.text(0.95, 0.05, 'Many attempts\nLow success rate',
+        transform=ax.transAxes, ha='right', va='bottom',
+        fontsize=12, color=SUBTITLE_TEXT, alpha=0.6)
+ax.text(0.05, 0.95, 'Few attempts\nHigh success rate',
+        transform=ax.transAxes, ha='left', va='top',
+        fontsize=12, color=SUBTITLE_TEXT, alpha=0.6)
+
+ax.set_title(
+    'LEGIA WARSZAWA — DRIBBLES: VOLUME vs SUCCESS RATE',
+    fontsize=24, fontweight='bold', color=TEXT_COLOR, pad=30, loc='left',
+)
+ax.text(
+    0.0, 1.02,
+    f'Ekstraklasa 2025/26 | min. {MIN_MATCHES} matches, min. {MIN_DRIBBLES} successful dribbles | dot size = minutes played',
+    transform=ax.transAxes, fontsize=16, color=SUBTITLE_TEXT,
+    verticalalignment='bottom',
+)
+
+ax.set_xlabel('Successful Dribbles (total)', fontsize=15, color=TEXT_COLOR, fontweight='bold')
+ax.set_ylabel('Dribble Success Rate %', fontsize=15, color=TEXT_COLOR, fontweight='bold')
+ax.tick_params(axis='both', labelsize=11, colors=SUBTITLE_TEXT, length=0)
+ax.set_xlim(x_min, x_max)
+ax.set_ylim(y_min, y_max)
+ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.0f}%'))
+
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+ax.grid(linewidth=0.5, alpha=0.2, color=COLOR_GRID, zorder=0)
+ax.set_axisbelow(True)
+
+fig.patch.set_facecolor(BG_COLOR)
+ax.set_facecolor(BG_COLOR)
+
+ax.margins(x=0.05, y=0.05)
+
+fig.tight_layout()
+fm = plt.get_current_fig_manager()
+fm.window.showMaximized()
+plt.savefig('images/scatter4.png', dpi=600, bbox_inches='tight', facecolor=BG_COLOR)
+plt.show()
