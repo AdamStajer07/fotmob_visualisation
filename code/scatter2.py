@@ -17,7 +17,7 @@ plt.rcParams.update({
     'font.sans-serif': ['Segoe UI', 'Arial', 'Helvetica'],
 })
 
-fig, ax = plt.subplots(figsize=(12, 10))
+fig, ax = plt.subplots(figsize=(18, 12))
 
 median_xg = teams['expected_goals_team'].median()
 median_xga = teams['expected_goals_conceded_team'].median()
@@ -48,7 +48,7 @@ for _, row in others.iterrows():
         label,
         (row['expected_goals_team'], row['expected_goals_conceded_team']),
         textcoords="offset points", xytext=(6, -12),
-        fontsize=9, color=SUBTITLE_TEXT,
+        fontsize=12, color=SUBTITLE_TEXT,
     )
 
 legia_goals_scored = int(legia['expected_goals_team_sub'])
@@ -63,36 +63,36 @@ ax.annotate(
     f"Legia Warszawa\n{legia_goals_scored}:{legia_goals_conceded}",
     (legia['expected_goals_team'], legia['expected_goals_conceded_team']),
     textcoords="offset points", xytext=(8, 10),
-    fontsize=11, fontweight='bold', color='black',
+    fontsize=16, fontweight='bold', color='black',
     alpha=0.9,
 )
 
 ax.text(0.95, 0.95, 'Strong attack\nStrong defence',
         transform=ax.transAxes, ha='right', va='top',
-        fontsize=10, fontweight='bold', color=LEGIA_COLOR, alpha=0.5)
+        fontsize=13, fontweight='bold', color=LEGIA_COLOR, alpha=0.5)
 ax.text(0.05, 0.05, 'Weak attack\nWeak defence',
         transform=ax.transAxes, ha='left', va='bottom',
-        fontsize=10, fontweight='bold', color='#c0392b', alpha=0.5)
+        fontsize=13, fontweight='bold', color='#c0392b', alpha=0.5)
 ax.text(0.05, 0.95, 'Weak attack\nStrong defence',
         transform=ax.transAxes, ha='left', va='top',
-        fontsize=9, color=SUBTITLE_TEXT, alpha=0.5)
+        fontsize=14, color=SUBTITLE_TEXT, alpha=0.5)
 ax.text(0.95, 0.05, 'Strong attack\nWeak defence',
         transform=ax.transAxes, ha='right', va='bottom',
-        fontsize=9, color=SUBTITLE_TEXT, alpha=0.5)
+        fontsize=14, color=SUBTITLE_TEXT, alpha=0.5)
 
 ax.set_title(
     'EKSTRAKLASA 2025/26 — xG vs xGA',
-    fontsize=18, fontweight='bold', color=TEXT_COLOR, pad=24, loc='left',
+    fontsize=24, fontweight='bold', color=TEXT_COLOR, pad=30, loc='left',
 )
 ax.text(
     0.0, 1.02,
-    'Expected goals vs expected goals against | quadrants split by league median',
-    transform=ax.transAxes, fontsize=10, color=SUBTITLE_TEXT,
+    'Expected goals scored vs expected goals against | quadrants split by league median',
+    transform=ax.transAxes, fontsize=16, color=SUBTITLE_TEXT,
     verticalalignment='bottom',
 )
 
-ax.set_xlabel('xG (expected goals)', fontsize=12, color=TEXT_COLOR, fontweight='bold')
-ax.set_ylabel('xGA (expected goals against)', fontsize=12, color=TEXT_COLOR, fontweight='bold')
+ax.set_xlabel('xG (expected goals scored)', fontsize=15, color=TEXT_COLOR, fontweight='bold')
+ax.set_ylabel('xGA (expected goals against)', fontsize=15, color=TEXT_COLOR, fontweight='bold')
 ax.tick_params(axis='both', labelsize=11, colors=SUBTITLE_TEXT, length=0)
 ax.set_xlim(x_min, x_max)
 ax.set_ylim(y_min, y_max)
@@ -113,4 +113,5 @@ ax.margins(x=0.05, y=0.05)
 fig.tight_layout()
 fm = plt.get_current_fig_manager()
 fm.window.showMaximized()
+plt.savefig('images/scatter2.png', dpi=600, bbox_inches='tight', facecolor=BG_COLOR)
 plt.show()

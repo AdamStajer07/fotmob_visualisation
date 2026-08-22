@@ -4,7 +4,7 @@ import matplotlib.colors as mcolors
 import matplotlib.patheffects as pe
 import squarify
 from utils.colors import (BG_COLOR, TEXT_COLOR, SUBTITLE_TEXT)
-from utils.club_info import (SEASON, TEAM)
+from utils.club_info import (SEASON, TEAM, EXCLUDED_PLAYERS)
 
 df = pd.read_parquet('data/ekstraklasa_all_clean.parquet')
 
@@ -12,24 +12,27 @@ legia = df[
     (df['team'] == TEAM) &
     (df['tournament'] == 'Ekstraklasa') &
     (df['season'] == SEASON) &
-    (df['position'] != 'Keeper') &
-    (df['chances_created'] >= 5)
+    (df['position'] != 'Keeper')
 ].copy()
 
-legia['chances_created'] = legia['chances_created'].fillna(0)
-legia['big_chance_created_team_title'] = legia['big_chance_created_team_title'].fillna(0)
+legia = legia[~legia['player_name'].isin(EXCLUDED_PLAYERS)]
+
+legia['goals'] = legia['goals'].fillna(0)
+legia['assists'] = legia['assists'].fillna(0)
+legia['contributions'] = legia['goals'].astype(int) + legia['assists'].astype(int)
 
 legia = legia[legia['top_minutes_played'] >= 300].copy()
-legia = legia[legia['chances_created'] >= 1].sort_values('chances_created', ascending=False).reset_index(drop=True)
+legia = legia[legia['contributions'] >= 1].sort_values('contributions', ascending=False).reset_index(drop=True)
 
 names = legia['player_name'].tolist()
-chances = legia['chances_created'].astype(int).tolist()
-big_chances = legia['big_chance_created_team_title'].astype(int).tolist()
-labels = [f"{name}\n{c} chances ({bc} big)" for name, c, bc in zip(names, chances, big_chances)]
+contributions = legia['contributions'].astype(int).tolist()
+goals_list = legia['goals'].astype(int).tolist()
+assists_list = legia['assists'].astype(int).tolist()
+labels = [f"{name}\n{g}G + {a}A" for name, g, a in zip(names, goals_list, assists_list)]
 
 cmap = mcolors.LinearSegmentedColormap.from_list('legia', ['#e8f5e9', '#a5d6a7'])
-max_val = max(chances)
-colors = [cmap(c / max_val) for c in chances]
+max_val = max(contributions)
+colors = [cmap(c / max_val) for c in contributions]
 
 plt.rcParams.update({
     'font.family': 'sans-serif',
@@ -39,7 +42,7 @@ plt.rcParams.update({
 fig, ax = plt.subplots(figsize=(16, 9))
 
 squarify.plot(
-    sizes=chances,
+    sizes=contributions,
     label=labels,
     color=colors,
     alpha=0.9,
@@ -50,12 +53,12 @@ squarify.plot(
 )
 
 ax.set_title(
-    'LEGIA WARSZAWA — CHANCES CREATED',
-    fontsize=18, fontweight='bold', color=TEXT_COLOR, pad=20, loc='left',
+    'LEGIA WARSZAWA — GOAL CONTRIBUTIONS',
+    fontsize=24, fontweight='bold', color=TEXT_COLOR, pad=24, loc='left',
 )
 ax.text(
-    0.0, 1.01, 'Ekstraklasa 2025/26 | size = chances created | min. 5 chances',
-    transform=ax.transAxes, fontsize=10, color=SUBTITLE_TEXT,
+    0.0, 1.01, 'Ekstraklasa 2025/26 | size = goals + assists',
+    transform=ax.transAxes, fontsize=16, color=SUBTITLE_TEXT,
     verticalalignment='bottom',
 )
 
@@ -67,4 +70,5 @@ ax.set_facecolor(BG_COLOR)
 fig.tight_layout()
 fm = plt.get_current_fig_manager()
 fm.window.showMaximized()
+plt.savefig('images/treemap1.png', dpi=600, bbox_inches='tight', facecolor=BG_COLOR)
 plt.show()

@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from utils.colors import (BG_COLOR, LEGIA_COLOR, TEXT_COLOR, SUBTITLE_TEXT, LEAGUE_COLOR, COLOR_AVG_CLUB)
 from utils.club_info import (SEASON, TEAM)
+
 df = pd.read_parquet('data/team_stats.parquet')
 
 legia = df[(df['team_name'] == TEAM) & (df['season'] == SEASON)].iloc[0]
@@ -56,9 +57,9 @@ ax1.add_artist(centre1)
 ax1.text(0, 0.05, str(total_goals), ha='center', va='center',
          fontsize=36, fontweight='bold', color=TEXT_COLOR)
 ax1.text(0, -0.12, 'scored', ha='center', va='center',
-         fontsize=12, color=SUBTITLE_TEXT)
+         fontsize=15, color=SUBTITLE_TEXT)
 
-ax1.set_title('Goals scored', fontsize=14, fontweight='bold', color=TEXT_COLOR, pad=16)
+ax1.set_title('Goals scored', fontsize=17, fontweight='bold', color=TEXT_COLOR, pad=16)
 
 wedges2, texts2, autotexts2 = ax2.pie(
     values_conceded,
@@ -82,18 +83,18 @@ ax2.add_artist(centre2)
 ax2.text(0, 0.05, str(total_conceded), ha='center', va='center',
          fontsize=36, fontweight='bold', color=TEXT_COLOR)
 ax2.text(0, -0.12, 'conceded', ha='center', va='center',
-         fontsize=12, color=SUBTITLE_TEXT)
+         fontsize=15, color=SUBTITLE_TEXT)
 
-ax2.set_title('Goals conceded', fontsize=14, fontweight='bold', color=TEXT_COLOR, pad=16)
+ax2.set_title('Goals conceded', fontsize=17, fontweight='bold', color=TEXT_COLOR, pad=16)
 
 fig.suptitle(
     'LEGIA WARSZAWA — GOAL TYPES',
-    fontsize=18, fontweight='bold', color=TEXT_COLOR, y=0.96,
+    fontsize=24, fontweight='bold', color=TEXT_COLOR, y=0.96,
 )
 fig.text(
     0.5, 0.91,
     f'Ekstraklasa 2025/26 | {legia["matches_played"]:.0f} matches played',
-    ha='center', fontsize=10, color=SUBTITLE_TEXT,
+    ha='center', fontsize=16, color=SUBTITLE_TEXT,
 )
 
 fig.patch.set_facecolor(BG_COLOR)
@@ -106,4 +107,5 @@ fig.add_artist(plt.Line2D([0.5, 0.5], [0.05, 0.85], transform=fig.transFigure,
 fig.tight_layout(rect=[0, 0, 1, 0.90])
 fm = plt.get_current_fig_manager()
 fm.window.showMaximized()
+plt.savefig('images/pie1.png', dpi=600, bbox_inches='tight', facecolor=BG_COLOR)
 plt.show()

@@ -65,25 +65,25 @@ ax.scatter(
 )
 
 param_labels = radar.draw_param_labels(
-    ax=ax, fontsize=11, color=TEXT_COLOR, fontweight='bold', offset=2.5,
+    ax=ax, fontsize=14, color=TEXT_COLOR, fontweight='bold', offset=2.5,
 )
 
 range_labels = radar.draw_range_labels(
-    ax=ax, fontsize=8, color=SUBTLE_TEXT, alpha=0.7,
+    ax=ax, fontsize=11, color=SUBTLE_TEXT, alpha=0.7,
 )
 
 fig.text(
     0.5, 0.95,
     'LEGIA WARSZAWA — OFFENSIVE PROFILE',
     ha='center', va='center',
-    fontsize=18, fontweight='bold', color=TEXT_COLOR,
+    fontsize=24, fontweight='bold', color=TEXT_COLOR,
     fontfamily='sans-serif',
 )
 fig.text(
     0.5, 0.91,
     'Ekstraklasa 2025/26 | vs league average',
     ha='center', va='center',
-    fontsize=12, color=SUBTLE_TEXT,
+    fontsize=17, color=SUBTLE_TEXT,
     fontfamily='sans-serif',
 )
 
@@ -91,13 +91,13 @@ legend_y = 0.06
 fig.patches.append(plt.Rectangle((0.30, legend_y), 0.025, 0.018,
                                   facecolor=LEGIA_COLOR, alpha=0.7,
                                   transform=fig.transFigure, zorder=10))
-fig.text(0.335, legend_y + 0.007, 'Legia Warszawa', fontsize=11,
+fig.text(0.335, legend_y + 0.007, 'Legia Warszawa', fontsize=14,
          color=TEXT_COLOR, va='center', fontfamily='sans-serif')
 
 fig.patches.append(plt.Rectangle((0.55, legend_y), 0.025, 0.018,
                                   facecolor=LEAGUE_COLOR, alpha=0.5,
                                   transform=fig.transFigure, zorder=10))
-fig.text(0.585, legend_y + 0.007, 'League average', fontsize=11,
+fig.text(0.585, legend_y + 0.007, 'League average', fontsize=14,
          color=TEXT_COLOR, va='center', fontfamily='sans-serif')
 
 float_indices = {0, 1}
@@ -108,9 +108,10 @@ for i, (x, y) in enumerate(vertices1):
         label, (x, y),
         textcoords="offset points", xytext=(0, 12),
         ha='center', va='bottom',
-        fontsize=9, fontweight='bold', color='white',
+        fontsize=12, fontweight='bold', color='white',
         bbox=dict(boxstyle='round,pad=0.2', facecolor=LEGIA_COLOR, alpha=0.85, edgecolor='none'),
     )
 
 plt.tight_layout(rect=[0, 0.08, 1, 0.88])
+plt.savefig('images/radar1.png', dpi=600, bbox_inches='tight', facecolor=BG_COLOR)
 plt.show()

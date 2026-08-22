@@ -4,7 +4,7 @@ import numpy as np
 from collections import defaultdict
 from utils.colors import (BG_COLOR, LEGIA_COLOR, LEAGUE_COLOR, TEXT_COLOR, SUBTITLE_TEXT,
                     COLOR_GRID, ZONE_GREEN, ZONE_RED, COLOR_TOP20_AVG, COLOR_STRIKERS_AVG)
-from utils.club_info import (SEASON, TEAM)
+from utils.club_info import (SEASON, TEAM, EXCLUDED_PLAYERS)
 
 df = pd.read_parquet('data/ekstraklasa_all_clean.parquet')
 
@@ -15,10 +15,33 @@ legia_players = df[
     (df['tournament'] == 'Ekstraklasa') &
     (df['season'] == SEASON) &
     (df['position'] != 'Keeper') &
-    (df['ShotsOnTarget'] >= MIN_SHOTS_ON_TARGET)
+    (df['ShotsOnTarget'] >= MIN_SHOTS_ON_TARGET) &
+    (df['top_minutes_played'] >= 300)
 ].dropna(subset=['ShotsOnTarget', 'goals']).copy()
 
+legia_players = legia_players[~legia_players['player_name'].isin(EXCLUDED_PLAYERS)]
+
 legia_players['conversion'] = legia_players['goals'] / legia_players['ShotsOnTarget']
+
+def shorten_names(names_list):
+    surnames = {}
+    for full_name in names_list:
+        parts = full_name.split()
+        surname = parts[-1] if parts else full_name
+        surnames.setdefault(surname, []).append(full_name)
+
+    short = {}
+    for surname, fulls in surnames.items():
+        if len(fulls) == 1:
+            short[fulls[0]] = surname
+        else:
+            for full in fulls:
+                parts = full.split()
+                short[full] = f"{parts[0][0]}. {surname}" if len(parts) > 1 else surname
+    return short
+
+name_map = shorten_names(legia_players['player_name'].tolist())
+legia_players['short_name'] = legia_players['player_name'].map(name_map)
 
 all_outfield = df[
     (df['tournament'] == 'Ekstraklasa') &
@@ -47,7 +70,7 @@ plt.rcParams.update({
     'font.sans-serif': ['Segoe UI', 'Arial', 'Helvetica'],
 })
 
-fig, ax = plt.subplots(figsize=(12, 10))
+fig, ax = plt.subplots(figsize=(18, 12))
 
 x_min, x_max = 0, legia_players['ShotsOnTarget'].max() + 2
 y_min, y_max = -0.05, min(legia_players['conversion'].max() + 0.1, 1.0)
@@ -59,9 +82,6 @@ ax.axvspan(league_median_shots, x_max, ymin=median_y_norm, ymax=1,
 ax.axvspan(x_min, league_median_shots, ymin=0, ymax=median_y_norm,
            facecolor=ZONE_RED, alpha=0.5, zorder=0)
 
-COLOR_TOP20_AVG = "#8b5cf6"
-COLOR_STRIKERS_AVG = "#1e3a5f"
-
 ax.scatter(
     top20_avg_shots, top20_avg_conv,
     color=COLOR_TOP20_AVG, s=120, zorder=4,
@@ -72,7 +92,7 @@ ax.annotate(
     'Top 20 strikers avg',
     (top20_avg_shots, top20_avg_conv),
     textcoords="offset points", xytext=(8, 8),
-    fontsize=9, fontweight='bold', color=COLOR_TOP20_AVG,
+    fontsize=14, fontweight='bold', color=COLOR_TOP20_AVG,
     alpha=0.85,
 )
 
@@ -86,7 +106,7 @@ ax.annotate(
     'All strikers avg',
     (strikers_avg_shots, strikers_avg_conv),
     textcoords="offset points", xytext=(8, 8),
-    fontsize=9, fontweight='bold', color=COLOR_STRIKERS_AVG,
+    fontsize=14, fontweight='bold', color=COLOR_STRIKERS_AVG,
     alpha=0.85,
 )
 
@@ -99,7 +119,7 @@ ax.scatter(
 groups = defaultdict(list)
 for _, row in legia_players.iterrows():
     key = (row['ShotsOnTarget'], round(row['conversion'], 4))
-    groups[key].append(row['player_name'])
+    groups[key].append(row['short_name'])
 
 for (x, y), names in groups.items():
     label = ',\n'.join(names)
@@ -107,36 +127,36 @@ for (x, y), names in groups.items():
         label,
         (x, y),
         textcoords="offset points", xytext=(8, 8),
-        fontsize=9, fontweight='bold', color=TEXT_COLOR,
+        fontsize=14, fontweight='bold', color=TEXT_COLOR,
         alpha=0.85,
     )
 
 ax.text(0.95, 0.95, 'Effective\nFinishers',
         transform=ax.transAxes, ha='right', va='top',
-        fontsize=11, fontweight='bold', color=LEGIA_COLOR, alpha=0.6)
+        fontsize=14, fontweight='bold', color=LEGIA_COLOR, alpha=0.6)
 ax.text(0.05, 0.05, 'Low\nOutput',
         transform=ax.transAxes, ha='left', va='bottom',
-        fontsize=11, fontweight='bold', color=LEAGUE_COLOR, alpha=0.6)
+        fontsize=14, fontweight='bold', color=LEAGUE_COLOR, alpha=0.6)
 ax.text(0.95, 0.05, 'Many chances\nLow conversion',
         transform=ax.transAxes, ha='right', va='bottom',
-        fontsize=9, color=SUBTITLE_TEXT, alpha=0.7)
+        fontsize=12, color=SUBTITLE_TEXT, alpha=0.7)
 ax.text(0.05, 0.95, 'Few chances\nHigh conversion',
         transform=ax.transAxes, ha='left', va='top',
-        fontsize=9, color=SUBTITLE_TEXT, alpha=0.7)
+        fontsize=12, color=SUBTITLE_TEXT, alpha=0.7)
 
 ax.set_title(
     'LEGIA WARSZAWA — SHOTS ON TARGET vs CONVERSION RATE',
-    fontsize=18, fontweight='bold', color=TEXT_COLOR, pad=24, loc='left',
+    fontsize=24, fontweight='bold', color=TEXT_COLOR, pad=30, loc='left',
 )
 ax.text(
     0.0, 1.02,
     f'Ekstraklasa 2025/26 | min. {MIN_SHOTS_ON_TARGET} shots on target',
-    transform=ax.transAxes, fontsize=10, color=SUBTITLE_TEXT,
+    transform=ax.transAxes, fontsize=16, color=SUBTITLE_TEXT,
     verticalalignment='bottom',
 )
 
-ax.set_xlabel('Shots on target', fontsize=12, color=TEXT_COLOR, fontweight='bold')
-ax.set_ylabel('Conversion rate (goals / shots on target)', fontsize=12, color=TEXT_COLOR, fontweight='bold')
+ax.set_xlabel('Shots on target', fontsize=15, color=TEXT_COLOR, fontweight='bold')
+ax.set_ylabel('Conversion rate (goals / shots on target)', fontsize=15, color=TEXT_COLOR, fontweight='bold')
 ax.tick_params(axis='both', labelsize=11, colors=SUBTITLE_TEXT, length=0)
 ax.set_xlim(x_min, x_max)
 ax.set_ylim(y_min, y_max)
@@ -157,4 +177,5 @@ ax.margins(x=0.05, y=0.05)
 fig.tight_layout()
 fm = plt.get_current_fig_manager()
 fm.window.showMaximized()
+plt.savefig('images/scatter1.png', dpi=600, facecolor=BG_COLOR)
 plt.show()

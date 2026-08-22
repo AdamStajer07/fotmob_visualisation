@@ -34,3 +34,16 @@ ZONE_RED = "#ffebee"
 RING_COLOR_1 = "#f7f7f7"
 RING_COLOR_2 = "#ebebeb"
 RING_EDGE = "#d0d0d0"
+
+# Bar 4 (yellow/red cards)
+COLOR_YELLOW = '#f1c40f'
+COLOR_RED = '#e74c3c'
+COLOR_PENALTY = '#8e44ad'
+
+# Bar 5 (interceptions/tackles)
+COLOR_TACKLES = LEGIA_COLOR
+COLOR_INTERCEPT = '#2980b9'
+
+# Bar 6 (long passes)
+COLOR_ACCURATE = LEGIA_COLOR  
+COLOR_INACCURATE = '#d0d0d0'

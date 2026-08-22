@@ -6,7 +6,7 @@ import numpy as np
 from utils.colors import (BG_COLOR, LEGIA_COLOR, LEAGUE_COLOR, TEXT_COLOR, SUBTITLE_TEXT,
                     COLOR_GRID, COLOR_OVERPERFORM, COLOR_UNDERPERFORM,
                     COLOR_AVG_LEAGUE, COLOR_AVG_CLUB)
-from utils.club_info import (SEASON, TEAM)
+from utils.club_info import (SEASON, TEAM, EXCLUDED_PLAYERS)
 
 df = pd.read_parquet('data/ekstraklasa_all_clean.parquet')
 
@@ -16,6 +16,8 @@ legia_players = df[
     (df['season'] == SEASON) &
     (df['position'] != 'Keeper')
 ].copy()
+
+legia_players = legia_players[~legia_players['player_name'].isin(EXCLUDED_PLAYERS)]
 
 # xG > 0.5 or min. 1 goal
 legia_players = legia_players[
@@ -55,9 +57,6 @@ plt.rcParams.update({
     'font.family': 'sans-serif',
     'font.sans-serif': ['Segoe UI', 'Arial', 'Helvetica'],
 })
-
-COLOR_AVG_LEAGUE = "#2c5f8a"
-COLOR_AVG_CLUB = "#1e3a5f"
 
 fig, ax = plt.subplots(figsize=(14, max(8, len(plot_data) * 0.5 + 2)))
 
@@ -114,26 +113,26 @@ for _, row in plot_data.iterrows():
         ax.text(
             goals + 0.2, row['player_name'],
             s=goals_label,
-            fontsize=10, fontweight='bold', color=val_color,
+            fontsize=13, fontweight='bold', color=val_color,
             verticalalignment='center',
         )
         ax.text(
             xg - 0.2, row['player_name'],
             s=row['player_name'],
-            fontsize=10, fontweight='bold', color=name_color,
+            fontsize=13, fontweight='bold', color=name_color,
             verticalalignment='center', horizontalalignment='right',
         )
     else:
         ax.text(
             goals - 0.3, row['player_name'],
             s=goals_label,
-            fontsize=10, fontweight='bold', color=val_color,
+            fontsize=13, fontweight='bold', color=val_color,
             verticalalignment='center',
         )
         ax.text(
             xg + 0.2, row['player_name'],
             s=row['player_name'],
-            fontsize=10, fontweight='bold', color=name_color,
+            fontsize=13, fontweight='bold', color=name_color,
             verticalalignment='center', horizontalalignment='left',
         )
 
@@ -144,7 +143,7 @@ for _, row in plot_data.iterrows():
             (goals + xg) / 2,
             row['player_name'],
             s=diff_label,
-            fontsize=8, fontweight='bold', color=line_color,
+            fontsize=11, fontweight='bold', color=line_color,
             horizontalalignment='center',
             verticalalignment='bottom',
             path_effects=[
@@ -153,12 +152,12 @@ for _, row in plot_data.iterrows():
         )
 
 ax.set_title(
-    'LEGIA WARSZAWA — GOALS vs xG',
-    fontsize=18, fontweight='bold', color=TEXT_COLOR, pad=24, loc='left',
+    'LEGIA WARSZAWA — Goals vs xG',
+    fontsize=24, fontweight='bold', color=TEXT_COLOR, pad=30, loc='left',
 )
 ax.text(
     0.0, 1.02, 'Ekstraklasa 2025/26 | overperformance in green, underperformance in red',
-    transform=ax.transAxes, fontsize=10, color=SUBTITLE_TEXT,
+    transform=ax.transAxes, fontsize=16, color=SUBTITLE_TEXT,
     verticalalignment='bottom',
 )
 
@@ -188,7 +187,7 @@ legend_elements = [
 ]
 legend = ax.legend(
     handles=legend_elements, loc='lower right',
-    fontsize=10, framealpha=0.9, edgecolor=COLOR_GRID,
+    fontsize=13, framealpha=0.9, edgecolor=COLOR_GRID,
     fancybox=True, shadow=False,
 )
 legend.get_frame().set_facecolor(BG_COLOR)
@@ -202,4 +201,5 @@ fig.tight_layout()
 
 fm = plt.get_current_fig_manager()
 fm.window.showMaximized()
+plt.savefig('images/dumbbell1.png', dpi=600, bbox_inches='tight', facecolor=BG_COLOR)
 plt.show()
