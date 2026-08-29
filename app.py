@@ -253,7 +253,7 @@ for i, plot in enumerate(PLOTS):
         else:
             col1, col2, col3 = st.columns([1, 8, 1])
         with col2:
-            st.image(str(img_path), use_column_width=True)
+            st.image(str(img_path), use_container_width=True)
     else:
         st.warning(f"Brak pliku: {img_path}")
     st.markdown(f'<div class="plot-description">{plot["text"]}</div>', unsafe_allow_html=True)
